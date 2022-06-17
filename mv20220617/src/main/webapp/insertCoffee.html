@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Coffee Insert</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+            咖啡名稱:<input type="text" id="cofName" value="Brown Coffee 2"/><br/>
+            售價:<input type="text" id="sales" value="200"/><br/>
+            總量:<input type="text" id="total" value="10"/><br/>
+            供應商:<input type="text" id="supId" value="49"/><br/>
+            價格:<input type="text" id="price" value="30"/><br/>
+          <button onclick="query()">Query All</button>
+         <button onclick="send()">Send</button>
+            
+      <div id="display">Return Text</div>      
+      
+   <script>
+   function result(data,status){
+ 	  //alert(status);
+ 	  $("#display").html(data);
+   }
+   function query(){
+	   $.get("CoffeeListMapServlet",result);
+   } 
+   function send(){
+        	  var obj=new Object();
+        	  obj.cofName=document.getElementById("cofName").value;
+        	  obj.sales=parseInt(document.getElementById("sales").value);
+        	  obj.total=parseInt(document.getElementById("total").value);
+        	  obj.supId=parseInt(document.getElementById("supId").value);
+        	  obj.price=parseFloat(document.getElementById("price").value);
+        	  var st=JSON.stringify(obj);
+        	  $.ajax("CoffeeJsonServlet",{					
+	 				type:"post",
+	 				data:  st,
+	 				contentType:"json",  // 要送到server的資料型態				
+	 				dataType:"html" ,   // 預期從server接收的資料型態				
+	 				success: result ,
+	 			    error : function (data, status, errormsg) {
+	 			        $("#display").html(errormsg);			        
+	 			    }
+	 			});
+        	
+        	
+          }
+   </script>
+</body>
+</html>
